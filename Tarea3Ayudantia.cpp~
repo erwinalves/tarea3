@@ -50,7 +50,7 @@ void leerCoordenada(int matriz[5000][2]){
         arrayB[1]=matriz[i][2]
         i=5000;
       }
-  }*/
+  }esta es una prueba*/
 
 int main()
 {

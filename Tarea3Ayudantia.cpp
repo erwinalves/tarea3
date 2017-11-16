@@ -5,9 +5,9 @@
 
 using namespace std;
 
-void leerPuntos(int matriz[5000][2]){
+void leerPuntos(float matriz[5000][3]){
   FILE *fichero;
-  fichero = fopen("punto.txt","r");
+  fichero = fopen("puntos","r");
   if (fichero==NULL){
     printf( "No se puede abrir el fichero.\n" );
     system("pause");
@@ -17,7 +17,7 @@ void leerPuntos(int matriz[5000][2]){
   while (1){
     if (feof(fichero))
       break;
-    fscanf (fichero, "%d %d %d\n", &matriz[i][0], &matriz[i][1], &matriz[i][2]);
+    fscanf (fichero, "%f %f %f\n", &matriz[i][0], &matriz[i][1], &matriz[i][2]);
     i++;
    }
    fclose(fichero);
@@ -54,13 +54,13 @@ void leerCoordenada(int matriz[5000][2]){
 
 int main()
 {
-  int puntos[5000][2];
+  float puntos[5000][3];
   leerPuntos(puntos);
   printf( "Contenido del fichero:\n" );
   int  i,j;
-  for (i = 0; i < 3; i++) {
+  for (i = 0; i < 5000; i++) {
     for (j = 0; j < 3; j++)
-      printf ("%d ", puntos[i][j]);
+      printf ("%f ", puntos[i][j]);
       printf ("\n");
   }
 }
