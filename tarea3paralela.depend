@@ -1,0 +1,5 @@
+# depslib dependency file v1.0
+1510679650 source:c:\users\alumnos\desktop\tarea3paralela\main.cpp
+	<iostream>
+	<fstream>
+

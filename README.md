@@ -1,2 +1,1 @@
-# proyecto-de-software
-# tarea3
+# tarea.ayudantia
