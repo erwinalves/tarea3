@@ -80,11 +80,6 @@ int main(int argc, char *argv[])
     int status,rank_actual,cant_proce;
     int limite[2];
     float puntos[5000][3];
-    /*int numero = atoi(argv[1]);//guarda el argumento pasado por consola
-    if(numero < 2){
-      cout<<"Ingrese un número válido."<<endl;//uno no es primo
-    }
-    else{//si se ingresa un numero valido empieza a trabajar*/
       MPI_Init(&argc, &argv);  // Inicio de MPI   
       MPI_Comm_size(MPI_COMM_WORLD, &cant_proce);  // numero de procesadores 
       MPI_Comm_rank(MPI_COMM_WORLD, &rank_actual); // rango de procesadores 
