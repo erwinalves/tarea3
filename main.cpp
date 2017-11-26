@@ -48,7 +48,7 @@ void leerTriangulos(float x, float matriz[5000][3]){
       break;
     int a,b,c;
     fscanf (fichero, "%d %d %d\n", &a, &b, &c);
-    //printf("Los puntos son : %d %d %d\n", a,b,c);
+    printf("Los puntos son : %d %d %d\n", a,b,c);
     float A[2],B[2],C[2];
     A[0]=matriz[a-1][1];
     //printf("El X1 es : %f \n", A[0]);
