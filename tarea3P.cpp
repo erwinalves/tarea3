@@ -6,6 +6,7 @@
 #include <math.h>
 #include <cmath>
 #include <iomanip>
+//#include <triangulo.h>
 using namespace std;
 using std::setw;
 
@@ -47,6 +48,15 @@ void leerTriangulos(float x, float matriz[5000][3], int li, int lf){
     exit (EXIT_FAILURE);
   }
   int i = 0;
+  int aux = 0;
+  while(aux <= li){
+  if (feof(fichero));
+      break;
+    int a,b,c;
+    fscanf (fichero, "%d %d %d\n", &a, &b, &c);
+    //printf("Los puntos son : %d %d %d\n", a,b,c); 
+    aux++;
+  }
   for (li; li<=lf; li++){
     if (feof(fichero));
       break;
@@ -80,11 +90,6 @@ int main(int argc, char *argv[])
     int status,rank_actual,cant_proce;
     int limite[2];
     float puntos[5000][3];
-    /*int numero = atoi(argv[1]);//guarda el argumento pasado por consola
-    if(numero < 2){
-      cout<<"Ingrese un número válido."<<endl;//uno no es primo
-    }
-    else{//si se ingresa un numero valido empieza a trabajar*/
       MPI_Init(&argc, &argv);  // Inicio de MPI   
       MPI_Comm_size(MPI_COMM_WORLD, &cant_proce);  // numero de procesadores 
       MPI_Comm_rank(MPI_COMM_WORLD, &rank_actual); // rango de procesadores 
