@@ -2,7 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
-#define triangulos 9665
+
 
 int buscarL(char fichero[], int linea)//buscar una linea en el archivo deseado
 {
@@ -40,7 +40,6 @@ void buscarPu(int triangulo, char fichero[], float punto[2]){//busca el valor de
 float sumaPerimetro (float punto1[2],float punto2[2],float punto3[2])//suma el valor de cada una de las distancias de los puntos
 {
     float ladoA,ladoB,ladoC;
-
     ladoA= sqrt((punto1[0]-punto2[0])*(punto1[0]-punto2[0])+(punto1[1]-punto2[1])*(punto1[1]-punto2[1]));
     ladoB= sqrt((punto2[0]-punto3[0])*(punto2[0]-punto3[0])+(punto2[1]-punto3[1])*(punto2[1]-punto3[1]));
     ladoC= sqrt((punto1[0]-punto3[0])*(punto1[0]-punto3[0])+(punto1[1]-punto3[1])*(punto1[1]-punto3[1]));
@@ -82,12 +81,12 @@ int main(int argc, char* argv[])
     MPI_Init(&argc,&argv);
     MPI_Comm_size( MPI_COMM_WORLD, &cant_Proce ); //cantidad de proces
     MPI_Comm_rank( MPI_COMM_WORLD, &rank_Actual );     // rank actual  
-    if(triangulos%cant_Proce==0){//se trabaja diferente para procesadores pares e impares.
-        A=triangulos/cant_Proce;
+    if(9665%cant_Proce==0){//se trabaja diferente para procesadores pares e impares.
+        A=9665/cant_Proce;
     }
     else{   
-        A=triangulos/cant_Proce;
-        B=triangulos%cant_Proce;
+        A=9665/cant_Proce;
+        B=9665%cant_Proce;
     }
     if(rank == 0){
         for(int i=1;i<=A+B;i++){
