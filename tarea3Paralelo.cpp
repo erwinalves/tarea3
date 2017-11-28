@@ -88,7 +88,7 @@ int main(int argc, char* argv[])
         A=9665/cant_Proce;
         B=9665%cant_Proce;
     }
-    if(rank == 0){
+    if(rank_Actual == 0){
         for(int i=1;i<=A+B;i++){
             perimetro=buscarTri("triangulos",i,triangulo);
             C+=perimetro;
