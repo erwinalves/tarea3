@@ -2,7 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <ctime>
 
+unsigned t0, t1;
 
 int buscarL(char fichero[], int linea)//buscar una linea en el archivo deseado
 {
@@ -70,7 +72,7 @@ float buscarTri(char fichero[],int linea, int triangulo[3])//obtiene los valores
 
 int main(int argc, char* argv[])
 {   
-
+    t0=clock();
     int rank_Actual, cant_Proce;
     int triangulo[3]={0,0,0};
     int A=0;
@@ -106,5 +108,8 @@ int main(int argc, char* argv[])
         MPI_Reduce(&C,&perimetro_Total,1,MPI_REAL,MPI_SUM,0,MPI_COMM_WORLD);          
     }
     MPI_Finalize();
+    t1=clock();
+    double time = (double(t1-t0)/CLOCKS_PER_SEC);
+    printf("Execution Time: %f\n" ,time);
     return 0;  
 }
