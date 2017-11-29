@@ -88,20 +88,18 @@ int main(int argc, char* argv[])
         A=9665/cant_Proce;
         B=9665%cant_Proce;
     }
-    if(rank == 0){
+    if(rank_Actual == 0){
         for(int i=1;i<=A+B;i++){
             perimetro=buscarTri(i,triangulo);
             C+=perimetro;
-            //printf("procesador : %d numero de linea %d= %f\n",rank_Actual,i,perimetro);
         }
         MPI_Reduce(&C,&perimetro_Total,1,MPI_REAL,MPI_SUM,0,MPI_COMM_WORLD);//mpi_reduce reduce un valor de un grupo de procesos en un único proceso
-        printf("%f\n",perimetro_Total);
+        printf("El perimetro total es: %f\n",perimetro_Total);
     }
     else{
         for(int i =A*rank_Actual+B+1;i<=A*rank_Actual+A+B;i++){
             perimetro=buscarTri(i,triangulo);
             C+=perimetro;
-            //printf("procesador : %d numero de linea %d= %f\n",rank_Actual,i,perimetro);
         }
         MPI_Reduce(&C,&perimetro_Total,1,MPI_REAL,MPI_SUM,0,MPI_COMM_WORLD);          
     }
