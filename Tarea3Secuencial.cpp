@@ -4,8 +4,12 @@
 #include <math.h>
 #include <cmath>
 #include <iomanip>
+#include <ctime>
+
 using namespace std;
 using std::setw;
+
+unsigned t0, t1;
 
 float calcularDistancia (float a[2], float b[2], float c[2], float y){
   y = y + sqrt((b[0] - a[0])*(b[0] - a[0] ) + (b[1] - a[1])*(b[1] - a[1]));
@@ -69,9 +73,13 @@ void leerTriangulos(float x, float matriz[5000][3]){
    printf("La suma de todos los perimetros es : %f \n", x);
 }
 int main(){
+  t0=clock();
   float puntos[5000][3];
   leerPuntos(puntos);
   float perimetro=0;
   leerTriangulos(perimetro, puntos);
+  t1=clock();
+  double time = (double(t1-t0)/CLOCKS_PER_SEC);
+  cout << "Execution Time: " << time << endl;
 }
 
