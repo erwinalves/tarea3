@@ -6,64 +6,64 @@
 
 unsigned t0, t1;
 
-int buscarL(char fichero[], int linea)//buscar una linea en el archivo deseado
+int buscar_linea(char fichero[], int li)//buscar una linea en el archivo deseado
 {
-    int lugar;
+    int lu;
     FILE *datos=fopen(fichero,"r");
-    int contar=linea-1;
+    int cont=li-1;
     fseek(datos, 0, SEEK_SET);//fseek situa el cursor en un lugar deseado
-    prueba:     
-    if (contar>0)  
+    proof:     
+    if (cont>0)  
     { 
     while (fgetc (datos) != '\n');
-        contar--;
-        goto prueba;
+        cont--;
+        goto proof;
     }
-    lugar=ftell(datos);//fteel para determinar el lugar del cursor de escritura/lectura
+    lu=ftell(datos);//fteel para determinar el lugar del cursor de escritura/lectura
     fclose(datos);
-    return lugar;
+    return lu;
 
 }
-void buscarPu(int triangulo, char fichero[], float punto[2]){//busca el valor de las cordenadas de los puntos de un triangulo
-    int lado;
+void buscar_punto(int Tri, char fichero[], float p[2]){//busca el valor de las cordenadas de los puntos de un triangulo
+    int la;
     float x, y;
     FILE *datos=fopen(fichero,"r");
-    int lugar;
-    lugar=buscarL("puntos",triangulo);
-    fseek(datos,lugar,SEEK_SET);
-    fscanf(datos,"%d %f %f", &lado,&x,&y);
-    if (lado==triangulo){
-        punto[0]=x;
-        punto[1]=y;
+    int lu;
+    lu=buscar_linea("puntos",Tri);
+    fseek(datos,lu,SEEK_SET);
+    fscanf(datos,"%d %f %f", &la,&x,&y);
+    if (la==Tri){
+        p[0]=x;
+        p[1]=y;
     }
     fclose(datos);
 }
 
-float sumaPerimetro (float punto1[2],float punto2[2],float punto3[2])//suma el valor de cada una de las distancias de los puntos
+float suma_peri (float p1[2],float p2[2],float p3[2])//suma el valor de cada una de las distancias de los puntos
 {
-    float ladoA,ladoB,ladoC;
-    ladoA= sqrt((punto1[0]-punto2[0])*(punto1[0]-punto2[0])+(punto1[1]-punto2[1])*(punto1[1]-punto2[1]));
-    ladoB= sqrt((punto2[0]-punto3[0])*(punto2[0]-punto3[0])+(punto2[1]-punto3[1])*(punto2[1]-punto3[1]));
-    ladoC= sqrt((punto1[0]-punto3[0])*(punto1[0]-punto3[0])+(punto1[1]-punto3[1])*(punto1[1]-punto3[1]));
-    return ladoA+ladoB+ladoC;
+    float laA,laB,laC;
+    laA= sqrt((p1[0]-p2[0])*(p1[0]-p2[0])+(p1[1]-p2[1])*(p1[1]-p2[1]));
+    laB= sqrt((p2[0]-p3[0])*(p2[0]-p3[0])+(p2[1]-p3[1])*(p2[1]-p3[1]));
+    laC= sqrt((p1[0]-p3[0])*(p1[0]-p3[0])+(p1[1]-p3[1])*(p1[1]-p3[1]));
+    return laA+laB+laC;
 }
 
-float buscarTri(char fichero[],int linea, int triangulo[3])//obtiene los valores de los puntos que conforman el triangulo, para obtener
+float buscar_tri(char fichero[],int li, int Tri[3])//obtiene los valores de los puntos que conforman el triangulo, para obtener
 //las cordenadas y sumar sus distancias para ir calculando cada uno de los perimetros
 {
-    float perimetro, punto1[2], punto2[2], punto3[2];
+    float peri, p1[2], p2[2], p3[2];
     FILE *datos = fopen(fichero,"r");
     if(!feof(datos)){
-        int lugar;
-        lugar=buscarL("triangulos",linea); 
-        fseek(datos,lugar,SEEK_SET);
-        fscanf(datos,"%d %d %d\n",&triangulo[0],&triangulo[1],&triangulo[2]);
-        buscarPu(triangulo[0],"puntos",punto1);
-        buscarPu(triangulo[1],"puntos",punto2);
-        buscarPu(triangulo[2],"puntos",punto3);
-        perimetro=sumaPerimetro(punto1,punto2,punto3);        
+        int lug;
+        lug=buscar_linea("triangulos",li); 
+        fseek(datos,lug,SEEK_SET);
+        fscanf(datos,"%d %d %d\n",&Tri[0],&Tri[1],&Tri[2]);
+        buscar_punto(Tri[0],"puntos",p1);
+        buscar_punto(Tri[1],"puntos",p2);
+        buscar_punto(Tri[2],"puntos",p3);
+        peri=suma_peri(p1,p2,p3);        
         fclose(datos);
-        return perimetro;
+        return peri;
     }
     else{
         return 0;
@@ -73,39 +73,39 @@ float buscarTri(char fichero[],int linea, int triangulo[3])//obtiene los valores
 int main(int argc, char* argv[])
 {   
     t0=clock();
-    int rank_Actual, cant_Proce;
-    int triangulo[3]={0,0,0};
+    int rank_actual, cant_proce;
+    int Tri[3]={0,0,0};
     int A=0;
     int B=0;
     float C=0;
-    float perimetro=0;
-    float perimetro_Total=0;
+    float peri=0;
+    float peri_total=0;
     MPI_Init(&argc,&argv);
-    MPI_Comm_size( MPI_COMM_WORLD, &cant_Proce ); //cantidad de proces
-    MPI_Comm_rank( MPI_COMM_WORLD, &rank_Actual );     // rank actual  
-    if(9665%cant_Proce==0){//se trabaja diferente para procesadores pares e impares.
-        A=9665/cant_Proce;
+    MPI_Comm_size( MPI_COMM_WORLD, &cant_proce ); //cantidad de proces
+    MPI_Comm_rank( MPI_COMM_WORLD, &rank_actual );     // rank actual  
+    if(9665%cant_proce==0){//se trabaja diferente para procesadores pares e impares.
+        A=9665/cant_proce;
     }
     else{   
-        A=9665/cant_Proce;
-        B=9665%cant_Proce;
+        A=9665/cant_proce;
+        B=9665%cant_proce;
     }
-    if(rank_Actual == 0){
+    if(rank_actual == 0){
         for(int i=1;i<=A+B;i++){
-            perimetro=buscarTri("triangulos",i,triangulo);
-            C+=perimetro;
-            printf("procesador : %d numero de linea %d= %f\n",rank_Actual,i,perimetro);
+            peri=buscar_tri("triangulos",i,Tri);
+            C+=peri;
+            printf("procesador : %d numero de linea %d= %f\n",rank_actual,i,peri);
         }
-        MPI_Reduce(&C,&perimetro_Total,1,MPI_REAL,MPI_SUM,0,MPI_COMM_WORLD);//mpi_reduce reduce un valor de un grupo de procesos en un único proceso
-        printf("%f\n",perimetro_Total);
+        MPI_Reduce(&C,&peri_total,1,MPI_REAL,MPI_SUM,0,MPI_COMM_WORLD);//mpi_reduce reduce un valor de un grupo de procesos en un único proceso
+        printf("%f\n",peri_total);
     }
     else{
-        for(int i =A*rank_Actual+B+1;i<=A*rank_Actual+A+B;i++){
-            perimetro=buscarTri("triangulos",i,triangulo);
-            C+=perimetro;
-            printf("procesador : %d numero de linea %d= %f\n",rank_Actual,i,perimetro);
+        for(int i =A*rank_actual+B+1;i<=A*rank_actual+A+B;i++){
+            peri=buscar_tri("triangulos",i,Tri);
+            C+=peri;
+            printf("procesador : %d numero de linea %d= %f\n",rank_actual,i,peri);
         }
-        MPI_Reduce(&C,&perimetro_Total,1,MPI_REAL,MPI_SUM,0,MPI_COMM_WORLD);          
+        MPI_Reduce(&C,&peri_total,1,MPI_REAL,MPI_SUM,0,MPI_COMM_WORLD);          
     }
     MPI_Finalize();
     t1=clock();
