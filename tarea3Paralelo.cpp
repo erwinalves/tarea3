@@ -22,10 +22,10 @@ int buscarL(char fichero[], int linea)//buscar una linea en el archivo deseado
     return lugar;
 
 }
-void buscarPu(int triangulo, char fichero[], float punto[2]){//busca el valor de las cordenadas de los puntos de un triangulo
+void buscarPu(int triangulo, float punto[2]){//busca el valor de las cordenadas de los puntos de un triangulo
     int lado;
     float x, y;
-    FILE *datos=fopen(fichero,"r");
+    FILE *datos=fopen("puntos","r");
     int lugar;
     lugar=buscarL("puntos",triangulo);
     fseek(datos,lugar,SEEK_SET);
@@ -46,7 +46,7 @@ float sumaPerimetro (float punto1[2],float punto2[2],float punto3[2])//suma el v
     return ladoA+ladoB+ladoC;
 }
 
-float buscarTri(char fichero[],int linea, int triangulo[3])//obtiene los valores de los puntos que conforman el triangulo, para obtener
+float buscarTri(int linea, int triangulo[3])//obtiene los valores de los puntos que conforman el triangulo, para obtener
 //las cordenadas y sumar sus distancias para ir calculando cada uno de los perimetros
 {
     float perimetro, punto1[2], punto2[2], punto3[2];
@@ -56,9 +56,9 @@ float buscarTri(char fichero[],int linea, int triangulo[3])//obtiene los valores
         lugar=buscarL("triangulos",linea); 
         fseek(datos,lugar,SEEK_SET);
         fscanf(datos,"%d %d %d\n",&triangulo[0],&triangulo[1],&triangulo[2]);
-        buscarPu(triangulo[0],"puntos",punto1);
-        buscarPu(triangulo[1],"puntos",punto2);
-        buscarPu(triangulo[2],"puntos",punto3);
+        buscarPu(triangulo[0],punto1);
+        buscarPu(triangulo[1],punto2);
+        buscarPu(triangulo[2],punto3);
         perimetro=sumaPerimetro(punto1,punto2,punto3);        
         fclose(datos);
         return perimetro;
@@ -90,7 +90,7 @@ int main(int argc, char* argv[])
     }
     if(rank == 0){
         for(int i=1;i<=A+B;i++){
-            perimetro=buscarTri("triangulos",i,triangulo);
+            perimetro=buscarTri(i,triangulo);
             C+=perimetro;
             printf("procesador : %d numero de linea %d= %f\n",rank_Actual,i,perimetro);
         }
@@ -99,9 +99,9 @@ int main(int argc, char* argv[])
     }
     else{
         for(int i =A*rank_Actual+B+1;i<=A*rank_Actual+A+B;i++){
-            perimetro=buscarTri("triangulos",i,triangulo);
+            perimetro=buscarTri(i,triangulo);
             C+=perimetro;
-            printf("procesador : %d numero de linea %d= %f\n",rank_Actual,i,perimetro);
+            //printf("procesador : %d numero de linea %d= %f\n",rank_Actual,i,perimetro);
         }
         MPI_Reduce(&C,&perimetro_Total,1,MPI_REAL,MPI_SUM,0,MPI_COMM_WORLD);          
     }
